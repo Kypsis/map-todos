@@ -1,9 +1,13 @@
 import React from "react";
 
+import Header from "../src/components/Header/Header.component";
+import Map from "../src/pages/Map/Map.component";
+
 const App: React.FC = () => {
   return (
     <div className="App">
-      <h1>App</h1>
+      <Header />
+      <Map />
     </div>
   );
 };
