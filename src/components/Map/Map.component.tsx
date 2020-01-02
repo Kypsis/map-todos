@@ -6,7 +6,6 @@ import {
   TileLayer,
   ZoomControl
 } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
 
 interface Props {}
 
