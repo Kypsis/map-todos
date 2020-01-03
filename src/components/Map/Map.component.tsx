@@ -13,8 +13,8 @@ interface Props {}
 
 const Map: React.FC<Props> = () => {
   const [markers, setMarkers] = useState([
-    [59.43708, 24.745272],
-    [59.44708, 24.735272]
+    { coords: [59.43708, 24.745272] },
+    { coords: [59.44708, 24.735272] }
   ]);
 
   useEffect(() => {
@@ -23,13 +23,13 @@ const Map: React.FC<Props> = () => {
 
   const addMarker = (e: any): void => {
     console.log(e.latlng.lat);
-    setMarkers([...markers, [e.latlng.lat, e.latlng.lng]]);
+    setMarkers([...markers, { coords: [e.latlng.lat, e.latlng.lng] }]);
   };
 
-  const handleClick = (e: any, markerId: number[]): void => {
+  const handleDelete = (e: any, markerId: number[]): void => {
     console.log(markerId);
 
-    setMarkers(markers.filter(marker => marker !== markerId));
+    setMarkers(markers.filter(marker => marker.coords !== markerId));
   };
 
   return (
@@ -46,9 +46,9 @@ const Map: React.FC<Props> = () => {
       />
       <ZoomControl position="bottomright" />
       {markers.map((marker: any) => (
-        <Marker key={marker} position={marker} draggable>
+        <Marker key={marker.coords} position={marker.coords} draggable>
           <Popup>
-            <ToDo markerId={marker} handleClick={handleClick} />
+            <ToDo markerId={marker.coords} handleDelete={handleDelete} />
           </Popup>
         </Marker>
       ))}
