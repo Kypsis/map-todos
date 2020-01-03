@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import ReactDOMServer from "react-dom/server";
 import {
   Map as LeafletMap,
   Marker,
@@ -6,8 +7,10 @@ import {
   TileLayer,
   ZoomControl
 } from "react-leaflet";
+import L from "leaflet";
 
 import ToDo from "../ToDo/ToDo.component";
+import Icon from "../Icon/Icon.component";
 
 interface Props {}
 
@@ -96,26 +99,32 @@ const Map: React.FC<Props> = () => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <ZoomControl position="bottomright" />
-      {markers.map((marker: MarkerTypes) => (
-        <Marker
-          key={`${marker.coords}`}
-          position={marker.coords}
-          draggable={marker.isDraggable}
-          onDragend={updateMarkerPosition}
-          opacity={marker.completed ? 0.3 : 1}
-        >
-          <Popup>
-            <ToDo
-              markerId={marker.coords}
-              completed={marker.completed}
-              isDraggable={marker.isDraggable}
-              deleteMarker={deleteMarker}
-              toggleDraggable={toggleDraggable}
-              toggleCompleted={toggleCompleted}
-            />
-          </Popup>
-        </Marker>
-      ))}
+      {markers.map((marker: MarkerTypes, index: number) => {
+        const icon = L.divIcon({
+          html: ReactDOMServer.renderToString(<Icon iconNumber={index} />)
+        });
+        return (
+          <Marker
+            key={`${marker.coords}`}
+            position={marker.coords}
+            draggable={marker.isDraggable}
+            onDragend={updateMarkerPosition}
+            opacity={marker.completed ? 0.3 : 1}
+            icon={icon}
+          >
+            <Popup>
+              <ToDo
+                markerId={marker.coords}
+                completed={marker.completed}
+                isDraggable={marker.isDraggable}
+                deleteMarker={deleteMarker}
+                toggleDraggable={toggleDraggable}
+                toggleCompleted={toggleCompleted}
+              />
+            </Popup>
+          </Marker>
+        );
+      })}
     </LeafletMap>
   );
 };
