@@ -4,9 +4,10 @@ export const HeaderContainer = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
   display: flex;
-  height: 70px;
+  height: 50px;
   width: 100%;
   justify-content: space-between;
+  align-items: center;
   position: absolute;
   z-index: 99999;
 

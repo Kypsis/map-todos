@@ -13,13 +13,14 @@ interface Props {}
 
 interface MarkerTypes {
   coords: any;
+  completed: boolean;
   isDraggable: boolean;
 }
 
 const Map: React.FC<Props> = () => {
   const [markers, setMarkers] = useState([
-    { coords: [59.43708, 24.745272], isDraggable: false },
-    { coords: [59.44708, 24.735272], isDraggable: false }
+    { coords: [59.43708, 24.745272], completed: false, isDraggable: false },
+    { coords: [59.44708, 24.735272], completed: false, isDraggable: false }
   ]);
 
   // console log if markers state changes
@@ -28,10 +29,13 @@ const Map: React.FC<Props> = () => {
   }, [markers]);
 
   const addMarker = (e: any): void => {
-    console.log("New marker coords: ", e.latlng.lat);
     setMarkers(prevMarkers => [
       ...prevMarkers,
-      { coords: [e.latlng.lat, e.latlng.lng], isDraggable: false }
+      {
+        coords: [e.latlng.lat, e.latlng.lng],
+        completed: false,
+        isDraggable: false
+      }
     ]);
   };
 
@@ -64,6 +68,17 @@ const Map: React.FC<Props> = () => {
     setMarkers(copiedMarkers);
   };
 
+  const toggleCompleted = (e: any, markerId: number[]): void => {
+    const markerIndex = markers.findIndex(marker => marker.coords === markerId);
+
+    let copiedMarkers = [...markers];
+
+    copiedMarkers[markerIndex].completed = !copiedMarkers[markerIndex]
+      .completed;
+
+    setMarkers(copiedMarkers);
+  };
+
   const deleteMarker = (e: any, markerId: number[]): void => {
     setMarkers(markers.filter(marker => marker.coords !== markerId));
   };
@@ -87,12 +102,16 @@ const Map: React.FC<Props> = () => {
           position={marker.coords}
           draggable={marker.isDraggable}
           onDragend={updateMarkerPosition}
+          opacity={marker.completed ? 0.3 : 1}
         >
           <Popup>
             <ToDo
               markerId={marker.coords}
+              completed={marker.completed}
+              isDraggable={marker.isDraggable}
               deleteMarker={deleteMarker}
               toggleDraggable={toggleDraggable}
+              toggleCompleted={toggleCompleted}
             />
           </Popup>
         </Marker>

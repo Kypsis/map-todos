@@ -8,9 +8,9 @@ const Header: React.FC<Props> = () => {
   return (
     <div>
       <HeaderContainer>
-        <h2>Map</h2>
-        <h2>About</h2>
-        <h2>Login</h2>
+        <h3>Map</h3>
+        <h3>About</h3>
+        <h3>Login</h3>
       </HeaderContainer>
     </div>
   );
