@@ -11,24 +11,60 @@ import ToDo from "../ToDo/ToDo.component";
 
 interface Props {}
 
+interface MarkerTypes {
+  coords: any;
+  isDraggable: boolean;
+}
+
 const Map: React.FC<Props> = () => {
   const [markers, setMarkers] = useState([
-    { coords: [59.43708, 24.745272] },
-    { coords: [59.44708, 24.735272] }
+    { coords: [59.43708, 24.745272], isDraggable: false },
+    { coords: [59.44708, 24.735272], isDraggable: false }
   ]);
 
+  // console log if markers state changes
   useEffect(() => {
     console.log(markers);
   }, [markers]);
 
   const addMarker = (e: any): void => {
-    console.log(e.latlng.lat);
-    setMarkers([...markers, { coords: [e.latlng.lat, e.latlng.lng] }]);
+    console.log("New marker coords: ", e.latlng.lat);
+    setMarkers(prevMarkers => [
+      ...prevMarkers,
+      { coords: [e.latlng.lat, e.latlng.lng], isDraggable: false }
+    ]);
   };
 
-  const handleDelete = (e: any, markerId: number[]): void => {
-    console.log(markerId);
+  const updateMarkerPosition = (e: any): void => {
+    const markerIndex = markers.findIndex(
+      marker => marker.coords === e.target.options.position
+    );
 
+    // copy current markers state
+    let copiedMarkers = [...markers];
+
+    // replace dragged marker initial coordinates with new coordinates
+    copiedMarkers[markerIndex].coords = [
+      e.target._latlng.lat,
+      e.target._latlng.lng
+    ];
+
+    // set modified copiedMarkers as new markers state
+    setMarkers(copiedMarkers);
+  };
+
+  const toggleDraggable = (e: any, markerId: number[]): void => {
+    const markerIndex = markers.findIndex(marker => marker.coords === markerId);
+
+    let copiedMarkers = [...markers];
+
+    copiedMarkers[markerIndex].isDraggable = !copiedMarkers[markerIndex]
+      .isDraggable;
+
+    setMarkers(copiedMarkers);
+  };
+
+  const deleteMarker = (e: any, markerId: number[]): void => {
     setMarkers(markers.filter(marker => marker.coords !== markerId));
   };
 
@@ -45,10 +81,19 @@ const Map: React.FC<Props> = () => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <ZoomControl position="bottomright" />
-      {markers.map((marker: any) => (
-        <Marker key={marker.coords} position={marker.coords} draggable>
+      {markers.map((marker: MarkerTypes) => (
+        <Marker
+          key={`${marker.coords}`}
+          position={marker.coords}
+          draggable={marker.isDraggable}
+          onDragend={updateMarkerPosition}
+        >
           <Popup>
-            <ToDo markerId={marker.coords} handleDelete={handleDelete} />
+            <ToDo
+              markerId={marker.coords}
+              deleteMarker={deleteMarker}
+              toggleDraggable={toggleDraggable}
+            />
           </Popup>
         </Marker>
       ))}
