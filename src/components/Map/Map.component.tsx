@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Map as LeafletMap,
   Marker,
@@ -6,6 +6,8 @@ import {
   TileLayer,
   ZoomControl
 } from "react-leaflet";
+
+import ToDo from "../ToDo/ToDo.component";
 
 interface Props {}
 
@@ -15,9 +17,19 @@ const Map: React.FC<Props> = () => {
     [59.44708, 24.735272]
   ]);
 
-  const addMarker = (e: any) => {
+  useEffect(() => {
+    console.log(markers);
+  }, [markers]);
+
+  const addMarker = (e: any): void => {
     console.log(e.latlng.lat);
     setMarkers([...markers, [e.latlng.lat, e.latlng.lng]]);
+  };
+
+  const handleClick = (e: any, markerId: number[]): void => {
+    console.log(markerId);
+
+    setMarkers(markers.filter(marker => marker !== markerId));
   };
 
   return (
@@ -33,10 +45,10 @@ const Map: React.FC<Props> = () => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <ZoomControl position="bottomright" />
-      {markers.map(marker => (
-        <Marker position={marker} draggable>
+      {markers.map((marker: any) => (
+        <Marker key={marker} position={marker} draggable>
           <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
+            <ToDo markerId={marker} handleClick={handleClick} />
           </Popup>
         </Marker>
       ))}
