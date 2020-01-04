@@ -12,6 +12,8 @@ import L from "leaflet";
 import ToDo from "../ToDo/ToDo.component";
 import Icon from "../Icon/Icon.component";
 
+import "./Map.css";
+
 interface Props {}
 
 interface MarkerTypes {
@@ -22,8 +24,8 @@ interface MarkerTypes {
 
 const Map: React.FC<Props> = () => {
   const [markers, setMarkers] = useState([
-    { coords: [59.43708, 24.745272], completed: false, isDraggable: false },
-    { coords: [59.44708, 24.735272], completed: false, isDraggable: false }
+    { coords: [59.43898, 24.745272], completed: false, isDraggable: false },
+    { coords: [59.44508, 24.776272], completed: false, isDraggable: false }
   ]);
 
   // console log if markers state changes
@@ -101,7 +103,10 @@ const Map: React.FC<Props> = () => {
       <ZoomControl position="bottomright" />
       {markers.map((marker: MarkerTypes, index: number) => {
         const icon = L.divIcon({
-          html: ReactDOMServer.renderToString(<Icon iconNumber={index} />)
+          iconSize: [50, 50],
+          iconAnchor: [28, 52],
+          html: ReactDOMServer.renderToString(<Icon iconNumber={index} />),
+          className: "div-icon-style"
         });
         return (
           <Marker

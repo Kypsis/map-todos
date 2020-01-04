@@ -1,9 +1,12 @@
 import styled from "styled-components";
 
-export const IconContainer = styled.div`
-  width: 50px;
-  height: 50px;
-  background: transparent;
-  border: none;
-  position: relative;
+export const TextContainer = styled.div`
+  background-color: white;
+  border: 1px solid #51565f;
+  border-radius: 50%;
+  color: dimgray;
+  position: absolute;
+  left: 16px;
+  top: 6px;
+  width: 22px;
 `;
