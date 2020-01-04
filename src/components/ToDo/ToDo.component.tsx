@@ -19,7 +19,7 @@ const ToDo: React.FC<Props> = props => {
   return (
     <div>
       {!editable ? (
-        <p style={{ fontSize: "2em" }} onClick={() => setEditable(true)}>
+        <p style={{ fontSize: "1.5em" }} onClick={() => setEditable(true)}>
           {value}
         </p>
       ) : (
@@ -32,7 +32,7 @@ const ToDo: React.FC<Props> = props => {
         >
           <TextareaAutosize
             style={{
-              fontSize: "2em",
+              fontSize: "1.5em",
               resize: "none",
               border: "none",
               outline: "none",
@@ -49,13 +49,13 @@ const ToDo: React.FC<Props> = props => {
           />
         </form>
       )}
-      <button onClick={e => props.toggleDraggable(e, props.markerId)}>
+      {/* <button onClick={e => props.toggleDraggable(e, props.markerId)}>
         {!props.isDraggable ? "UDrag" : "LDrag"}
       </button>
       <button onClick={e => props.toggleCompleted(e, props.markerId)}>
         {!props.completed ? "Done" : "NDone"}
       </button>
-      <button onClick={e => props.deleteMarker(e, props.markerId)}>Del</button>
+      <button onClick={e => props.deleteMarker(e, props.markerId)}>Del</button> */}
     </div>
   );
 };

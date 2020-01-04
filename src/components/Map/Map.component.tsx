@@ -96,9 +96,15 @@ const Map: React.FC<Props> = () => {
       zoomControl={false}
       style={{ width: "100%", height: "100vh" }}
       onClick={allowAddMarker ? addMarker : null}
-      onPopupOpen={() => setAllowAddMarker(false)}
-      // add timeout, otherwise it will add marker on map when clicking out of popup
-      onPopupClose={() => setTimeout(() => setAllowAddMarker(true), 50)}
+      // add timeouts, otherwise it will add marker on map when clicking out of popup
+      onPopupOpen={() => {
+        console.log(allowAddMarker);
+        setTimeout(() => setAllowAddMarker(false), 100);
+      }}
+      onPopupClose={() => {
+        console.log(allowAddMarker);
+        setTimeout(() => setAllowAddMarker(true), 100);
+      }}
     >
       <TileLayer
         attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -122,7 +128,10 @@ const Map: React.FC<Props> = () => {
             opacity={marker.completed ? 0.3 : 1}
             icon={icon}
           >
-            <Popup className="popup-style">
+            <Popup
+              className="popup-style"
+              onOpen={() => setAllowAddMarker(false)}
+            >
               <ToDo
                 markerId={marker.coords}
                 completed={marker.completed}
