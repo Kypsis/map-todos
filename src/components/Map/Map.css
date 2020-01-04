@@ -5,3 +5,11 @@
   font-weight: bold;
   text-align: center;
 }
+
+.popup-style .leaflet-popup-content-wrapper {
+  word-wrap: break-word;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  font-size: 1.5em;
+}

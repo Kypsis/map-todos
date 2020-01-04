@@ -27,6 +27,7 @@ const Map: React.FC<Props> = () => {
     { coords: [59.43898, 24.745272], completed: false, isDraggable: false },
     { coords: [59.44508, 24.776272], completed: false, isDraggable: false }
   ]);
+  const [allowAddMarker, setAllowAddMarker] = useState(true);
 
   // console log if markers state changes
   useEffect(() => {
@@ -34,8 +35,8 @@ const Map: React.FC<Props> = () => {
   }, [markers]);
 
   const addMarker = (e: any): void => {
-    setMarkers(prevMarkers => [
-      ...prevMarkers,
+    setMarkers(currentMarkers => [
+      ...currentMarkers,
       {
         coords: [e.latlng.lat, e.latlng.lng],
         completed: false,
@@ -94,13 +95,17 @@ const Map: React.FC<Props> = () => {
       zoom={12}
       zoomControl={false}
       style={{ width: "100%", height: "100vh" }}
-      onClick={addMarker}
+      onClick={allowAddMarker ? addMarker : null}
+      onPopupOpen={() => setAllowAddMarker(false)}
+      // add timeout, otherwise it will add marker on map when clicking out of popup
+      onPopupClose={() => setTimeout(() => setAllowAddMarker(true), 50)}
     >
       <TileLayer
         attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <ZoomControl position="bottomright" />
+
       {markers.map((marker: MarkerTypes, index: number) => {
         const icon = L.divIcon({
           iconSize: [50, 50],
@@ -117,7 +122,7 @@ const Map: React.FC<Props> = () => {
             opacity={marker.completed ? 0.3 : 1}
             icon={icon}
           >
-            <Popup>
+            <Popup className="popup-style">
               <ToDo
                 markerId={marker.coords}
                 completed={marker.completed}
