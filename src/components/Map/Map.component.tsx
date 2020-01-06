@@ -9,7 +9,7 @@ import {
 } from "react-leaflet";
 import L from "leaflet";
 
-import ToDo from "../ToDo/ToDo.component";
+import ToDo from "../ToDo/ToDoOnMap.component";
 import Icon from "../Icon/Icon.component";
 
 import "./Map.css";
@@ -98,12 +98,10 @@ const Map: React.FC<Props> = () => {
       onClick={allowAddMarker ? addMarker : null}
       // add timeouts, otherwise it will add marker on map when clicking out of popup
       onPopupOpen={() => {
-        console.log(allowAddMarker);
-        setTimeout(() => setAllowAddMarker(false), 100);
+        setTimeout(() => setAllowAddMarker(false), 10);
       }}
       onPopupClose={() => {
-        console.log(allowAddMarker);
-        setTimeout(() => setAllowAddMarker(true), 100);
+        setTimeout(() => setAllowAddMarker(true), 10);
       }}
     >
       <TileLayer
@@ -116,7 +114,13 @@ const Map: React.FC<Props> = () => {
         const icon = L.divIcon({
           iconSize: [50, 50],
           iconAnchor: [28, 52],
-          html: ReactDOMServer.renderToString(<Icon iconNumber={index} />),
+          html: ReactDOMServer.renderToString(
+            <Icon
+              draggable={marker.isDraggable}
+              completed={marker.completed}
+              iconNumber={index}
+            />
+          ),
           className: "div-icon-style"
         });
         return (
@@ -125,7 +129,7 @@ const Map: React.FC<Props> = () => {
             position={marker.coords}
             draggable={marker.isDraggable}
             onDragend={updateMarkerPosition}
-            opacity={marker.completed ? 0.3 : 1}
+            opacity={marker.completed ? 0.4 : 1}
             icon={icon}
           >
             <Popup
