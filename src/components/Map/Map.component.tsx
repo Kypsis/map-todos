@@ -53,6 +53,10 @@ const Map: React.FC<Props> = () => {
     // copy current markers state
     let copiedMarkers = [...markers];
 
+    if (!copiedMarkers[markerIndex].coords) {
+      console.log("Marker lock error");
+      return;
+    }
     // replace dragged marker initial coordinates with new coordinates
     copiedMarkers[markerIndex].coords = [
       e.target._latlng.lat,
@@ -129,7 +133,6 @@ const Map: React.FC<Props> = () => {
             position={marker.coords}
             draggable={marker.isDraggable}
             onDragend={updateMarkerPosition}
-            opacity={marker.completed ? 0.4 : 1}
             icon={icon}
           >
             <Popup

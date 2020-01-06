@@ -64,24 +64,4 @@ export const HeaderContainer = styled.div`
     />
   </form>
 )}
-{props.isDraggable ? (
-  <div style={{ position: "absolute", left: "2px", top: "3px" }}>
-    <TiLockOpen
-      style={{
-        color: "gray",
-        fontSize: "18px"
-      }}
-      onClick={e => props.toggleDraggable(e, props.markerId)}
-    />
-  </div>
-) : (
-  <div style={{ position: "absolute", left: "2px", top: "3px" }}>
-    <TiLockClosed
-      style={{
-        color: "gray",
-        fontSize: "18px"
-      }}
-      onClick={e => props.toggleDraggable(e, props.markerId)}
-    />
-  </div>
-)} */
+ */

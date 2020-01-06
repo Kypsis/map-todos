@@ -16,25 +16,9 @@ interface SvgProps {
   readonly draggable: boolean;
 }
 
-/* const animation = keyframes`
-fade {
-  0%, 100% { 
-    opacity: 0 
-  }
-
-  50% { 
-    opacity: 1 
-  }
-}
-`;
-
-const animationRule = css`
-  ${animation} 1s infinite alternate;
-`; */
-
 const animation = keyframes`
   0% {
-    opacity: 0;
+    opacity: 0.1;
   }
 
   100 {
@@ -42,12 +26,11 @@ const animation = keyframes`
   }
 `;
 
-// ts styled plugin issue, complies fine
-const animationRule = css`
-  ${animation} 1s infinite alternate
-`;
-
 export const SvgContainer = styled.div<SvgProps>`
-  opacity: ${props => (props.completed ? "0.5" : "1")};
-  animation: ${animationRule};
+  opacity: ${props => (props.completed ? "0.4" : "1")};
+  ${props =>
+    props.draggable &&
+    css`
+      animation: ${animation} 0.8s infinite alternate;
+    `};
 `;

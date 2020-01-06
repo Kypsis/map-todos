@@ -11,6 +11,7 @@
 }
 
 .leaflet-container a.leaflet-popup-close-button {
-  font-size: 2em;
+  font-size: 1.8em;
   color: gray;
+  user-select: none;
 }
