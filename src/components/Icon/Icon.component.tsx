@@ -4,14 +4,14 @@ import { TextContainer, SvgContainer } from "./Icon.styles";
 
 interface Props {
   completed: boolean;
-  draggable: boolean;
+  isDraggable: boolean;
   iconNumber: number;
 }
 
 const Icon: React.FC<Props> = props => {
   return (
     // TODO prop drilling, remove with Redux?
-    <SvgContainer completed={props.completed} draggable={props.draggable}>
+    <SvgContainer completed={props.completed} isDraggable={props.isDraggable}>
       <svg x="20px" y="20px" viewBox="0 0 450 520">
         <circle fill="#A1A7EF" cx="238.556" cy="168" r="48" />
         <g transform="translate(11 1)">

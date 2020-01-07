@@ -1,67 +1,29 @@
 import styled from "styled-components";
 
-// placeholder
-export const HeaderContainer = styled.div`
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
+export const BottomIconButtonsContainer = styled.div`
+  color: gray;
   display: flex;
-  height: 50px;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  position: absolute;
-  z-index: 99999;
-
-  > * {
-    padding: 0 2rem;
-  }
-
-  /* @media screen and (max-width: 900px) {
-    height: 60px;
-    padding: 10px;
-  } */
+  justify-content: space-around;
+  font-size: 2em;
+  padding-top: 2px;
 `;
 
-/* {!editable ? (
-  <p
-    style={{
-      backgroundColor: "cyan",
-      fontSize: "1.8em",
-      fontWeight: 500,
-      marginBlockStart: "1em",
-      textDecoration: props.completed ? "line-through" : "none"
-    }}
-    onClick={() => setEditable(true)}
-  >
-    {value}
-  </p>
-) : (
-  <form
-    style={{ display: "flex" }}
-    onSubmit={e => {
-      e.preventDefault();
-      setEditable(false);
-    }}
-  >
-    <TextareaAutosize
-      style={{
-        backgroundColor: "cyan",
-        fontSize: "1.8em",
-        fontWeight: 500,
-        resize: "none",
-        border: "none",
-        outline: "none",
-        marginBlockStart: "0.8em",
-        marginBlockEnd: "0.65em",
-        fontFamily: "inherit",
-        lineHeight: "inherit"
-      }}
-      value={value}
-      onChange={handleChange}
-      autoFocus
-      onFocus={e => e.target.select()} 
-      onBlur={e => setEditable(false)}
-    />
-  </form>
-)}
- */
+export const IconContainer = styled.div`
+  color: gray;
+  font-size: 22px;
+  position: absolute;
+  left: 3px;
+  top: 1px;
+`;
+interface ToDoTextProps {
+  readonly completed: boolean;
+}
+
+export const ToDoTextContainer = styled.div<ToDoTextProps>`
+  color: #474747;
+  font-size: 1.9em;
+  margin-block-start: 1.5em;
+  margin-block-end: 0.4em;
+  outline: none;
+  text-decoration: ${props => (props.completed ? "line-through" : "none")};
+`;

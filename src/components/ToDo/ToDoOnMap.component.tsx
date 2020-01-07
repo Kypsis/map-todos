@@ -1,98 +1,88 @@
 import React, { useState, useEffect, useRef } from "react";
 
+import {
+  IconContainer,
+  BottomIconButtonsContainer,
+  ToDoTextContainer
+} from "./ToDoOnMap.styles";
 import { MdDelete, MdPlaylistAddCheck } from "react-icons/md";
 import { TiLockClosed, TiLockOpen } from "react-icons/ti";
 
+type MarkerId = number[];
 interface Props {
-  markerId: number[];
   completed: boolean;
   isDraggable: boolean;
-  deleteMarker(e: any, markerId: number[]): void;
-  toggleCompleted(e: any, markerId: number[]): void;
-  toggleDraggable(e: any, markerId: number[]): void;
+  markerId: MarkerId;
+  deleteMarker(markerId: MarkerId): void;
+  toggleCompleted(markerId: MarkerId): void;
+  toggleDraggable(markerId: MarkerId): void;
 }
 
-const ToDo: React.FC<Props> = props => {
-  const [todoText, setTodoText] = useState("Add a todo");
+const ToDoOnMap: React.FC<Props> = props => {
   const [todoEditable, setTodoEditable] = useState(false);
+  const [todoText, setTodoText] = useState("");
 
-  const element: any = useRef(null);
+  const element = useRef<HTMLDivElement>(null);
 
+  // Focus on text if Todo becomes editable
   useEffect(() => {
-    element.current.focus();
-    console.log(todoEditable);
+    if (element?.current && todoEditable === true) element.current.focus();
   }, [todoEditable]);
 
+  // If Todo has no text add placeholder text
   useEffect(() => {
     if (!todoText.length) setTodoText("Add a todo");
-
-    console.log(todoText);
   }, [todoText]);
+
+  // On blur event (clicking away) setTodoText to current text in the Todo
+  const handleBlur = () => {
+    if (element?.current?.textContent) setTodoText(element.current.textContent);
+    setTodoEditable(false);
+  };
+
+  // Enter key can be used to end Todo editing, SHIFT+Enter returns so new line
+  // functionality would work
+  const handleEnterKey = (e: React.KeyboardEvent) => {
+    if (e.shiftKey && e.key === "Enter") return;
+    if (e.key === "Enter") {
+      element?.current?.textContent && setTodoText(element.current.textContent);
+      setTodoEditable(false);
+    }
+  };
 
   return (
     <div>
-      <div
-        ref={element}
+      <ToDoTextContainer
+        completed={props.completed}
         contentEditable={todoEditable}
-        onBlur={() => {
-          setTodoText(element.current.textContent);
-          setTodoEditable(false);
-        }}
+        onBlur={handleBlur}
         onClick={() => setTodoEditable(true)}
-        onKeyPress={e => {
-          if (e.shiftKey && e.key === "Enter") return;
-          if (e.key === "Enter") {
-            setTodoText(element.current.textContent);
-            setTodoEditable(false);
-          }
-        }}
+        /* onFocus={() => document.execCommand("selectAll", false)}   // select all text */
+        onKeyPress={handleEnterKey}
+        ref={element}
         suppressContentEditableWarning
-        /* onFocus={() => document.execCommand("selectAll", false)} */
-        style={{
-          outline: "none",
-          color: "#474747",
-          fontSize: "1.9em",
-          marginBlockStart: "1.5em",
-          marginBlockEnd: "0.4em",
-          textDecoration: props.completed ? "line-through" : "none"
-        }}
       >
         {todoText}
-      </div>
+      </ToDoTextContainer>
 
-      <div style={{ display: "flex", justifyContent: "space-around" }}>
-        {props.isDraggable ? (
-          <div style={{ position: "absolute", left: "3px", top: "1px" }}>
-            <TiLockOpen
-              style={{
-                color: "gray",
-                fontSize: "22px"
-              }}
-              onClick={e => props.toggleDraggable(e, props.markerId)}
-            />
-          </div>
-        ) : (
-          <div style={{ position: "absolute", left: "3px", top: "1px" }}>
-            <TiLockClosed
-              style={{
-                color: "gray",
-                fontSize: "22px"
-              }}
-              onClick={e => props.toggleDraggable(e, props.markerId)}
-            />
-          </div>
-        )}
+      {props.isDraggable ? (
+        <IconContainer>
+          <TiLockOpen onClick={e => props.toggleDraggable(props.markerId)} />
+        </IconContainer>
+      ) : (
+        <IconContainer>
+          <TiLockClosed onClick={e => props.toggleDraggable(props.markerId)} />
+        </IconContainer>
+      )}
+
+      <BottomIconButtonsContainer>
         <MdPlaylistAddCheck
-          style={{ fontSize: "2em", color: "gray", paddingTop: "2px" }}
-          onClick={e => props.toggleCompleted(e, props.markerId)}
+          onClick={e => props.toggleCompleted(props.markerId)}
         />
-        <MdDelete
-          style={{ fontSize: "2em", color: "gray" }}
-          onClick={e => props.deleteMarker(e, props.markerId)}
-        />
-      </div>
+        <MdDelete onClick={e => props.deleteMarker(props.markerId)} />
+      </BottomIconButtonsContainer>
     </div>
   );
 };
 
-export default ToDo;
+export default ToDoOnMap;

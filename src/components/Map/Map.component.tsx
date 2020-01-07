@@ -7,20 +7,14 @@ import {
   TileLayer,
   ZoomControl
 } from "react-leaflet";
-import L from "leaflet";
+import L, { DragEndEvent, LeafletMouseEvent, LatLngTuple } from "leaflet";
 
-import ToDo from "../ToDo/ToDoOnMap.component";
+import ToDoOnMap from "../ToDo/ToDoOnMap.component";
 import Icon from "../Icon/Icon.component";
 
 import "./Map.css";
 
 interface Props {}
-
-interface MarkerTypes {
-  coords: any;
-  completed: boolean;
-  isDraggable: boolean;
-}
 
 const Map: React.FC<Props> = () => {
   const [markers, setMarkers] = useState([
@@ -34,7 +28,7 @@ const Map: React.FC<Props> = () => {
     console.log(markers);
   }, [markers]);
 
-  const addMarker = (e: any): void => {
+  const addMarker = (e: LeafletMouseEvent): void => {
     setMarkers(currentMarkers => [
       ...currentMarkers,
       {
@@ -45,60 +39,55 @@ const Map: React.FC<Props> = () => {
     ]);
   };
 
-  const updateMarkerPosition = (e: any): void => {
+  const updateMarkerPosition = (e: DragEndEvent): void => {
     const markerIndex = markers.findIndex(
       marker => marker.coords === e.target.options.position
     );
-
     // copy current markers state
     let copiedMarkers = [...markers];
 
-    if (!copiedMarkers[markerIndex].coords) {
+    if (copiedMarkers[markerIndex].coords !== undefined) {
+      // replace dragged marker initial coordinates with new coordinates
+      copiedMarkers[markerIndex].coords = [
+        e.target._latlng.lat,
+        e.target._latlng.lng
+      ];
+    } else {
       console.log("Marker lock error");
       return;
     }
-    // replace dragged marker initial coordinates with new coordinates
-    copiedMarkers[markerIndex].coords = [
-      e.target._latlng.lat,
-      e.target._latlng.lng
-    ];
-
     // set modified copiedMarkers as new markers state
     setMarkers(copiedMarkers);
   };
 
-  const toggleDraggable = (e: any, markerId: number[]): void => {
+  const toggleDraggable = (markerId: number[]): void => {
     const markerIndex = markers.findIndex(marker => marker.coords === markerId);
-
     let copiedMarkers = [...markers];
 
     copiedMarkers[markerIndex].isDraggable = !copiedMarkers[markerIndex]
       .isDraggable;
-
     setMarkers(copiedMarkers);
   };
 
-  const toggleCompleted = (e: any, markerId: number[]): void => {
+  const toggleCompleted = (markerId: number[]): void => {
     const markerIndex = markers.findIndex(marker => marker.coords === markerId);
-
     let copiedMarkers = [...markers];
 
     copiedMarkers[markerIndex].completed = !copiedMarkers[markerIndex]
       .completed;
-
     setMarkers(copiedMarkers);
   };
 
-  const deleteMarker = (e: any, markerId: number[]): void => {
+  const deleteMarker = (markerId: number[]): void => {
     setMarkers(markers.filter(marker => marker.coords !== markerId));
   };
 
   return (
     <LeafletMap
       center={[59.43708, 24.745272]}
+      style={{ width: "100%", height: "100vh" }}
       zoom={12}
       zoomControl={false}
-      style={{ width: "100%", height: "100vh" }}
       onClick={allowAddMarker ? addMarker : null}
       // add timeouts, otherwise it will add marker on map when clicking out of popup
       onPopupOpen={() => {
@@ -114,38 +103,41 @@ const Map: React.FC<Props> = () => {
       />
       <ZoomControl position="bottomright" />
 
-      {markers.map((marker: MarkerTypes, index: number) => {
+      {markers.map((marker, index: number) => {
+        const { coords, completed, isDraggable } = marker;
         const icon = L.divIcon({
-          iconSize: [50, 50],
+          className: "div-icon-style",
           iconAnchor: [28, 52],
+          iconSize: [50, 50],
+          // Render custom svg icon
           html: ReactDOMServer.renderToString(
             <Icon
-              draggable={marker.isDraggable}
-              completed={marker.completed}
+              isDraggable={isDraggable}
+              completed={completed}
               iconNumber={index}
             />
-          ),
-          className: "div-icon-style"
+          )
         });
+
         return (
           <Marker
-            key={`${marker.coords}`}
-            position={marker.coords}
-            draggable={marker.isDraggable}
-            onDragend={updateMarkerPosition}
+            draggable={isDraggable}
             icon={icon}
+            key={`${coords}`}
+            onDragend={updateMarkerPosition}
+            position={coords as LatLngTuple}
           >
             <Popup
               className="popup-style"
               onOpen={() => setAllowAddMarker(false)}
             >
-              <ToDo
-                markerId={marker.coords}
-                completed={marker.completed}
-                isDraggable={marker.isDraggable}
+              <ToDoOnMap
+                completed={completed}
                 deleteMarker={deleteMarker}
-                toggleDraggable={toggleDraggable}
+                isDraggable={isDraggable}
+                markerId={coords}
                 toggleCompleted={toggleCompleted}
+                toggleDraggable={toggleDraggable}
               />
             </Popup>
           </Marker>

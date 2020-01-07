@@ -13,7 +13,7 @@ export const TextContainer = styled.div`
 
 interface SvgProps {
   readonly completed: boolean;
-  readonly draggable: boolean;
+  readonly isDraggable: boolean;
 }
 
 const animation = keyframes`
@@ -29,7 +29,7 @@ const animation = keyframes`
 export const SvgContainer = styled.div<SvgProps>`
   opacity: ${props => (props.completed ? "0.4" : "1")};
   ${props =>
-    props.draggable &&
+    props.isDraggable &&
     css`
       animation: ${animation} 0.8s infinite alternate;
     `};
