@@ -26,7 +26,7 @@ const ToDoOnMap: React.FC<Props> = props => {
 
   // Focus on text if Todo becomes editable
   useEffect(() => {
-    if (element?.current && todoEditable === true) element.current.focus();
+    if (todoEditable === true) element?.current && element.current.focus();
   }, [todoEditable]);
 
   // If Todo has no text add placeholder text
@@ -36,7 +36,7 @@ const ToDoOnMap: React.FC<Props> = props => {
 
   // On blur event (clicking away) setTodoText to current text in the Todo
   const handleBlur = () => {
-    if (element?.current?.textContent) setTodoText(element.current.textContent);
+    element?.current?.textContent && setTodoText(element.current.textContent);
     setTodoEditable(false);
   };
 

@@ -103,7 +103,7 @@ const Map: React.FC<Props> = () => {
       />
       <ZoomControl position="bottomright" />
 
-      {markers.map((marker, index: number) => {
+      {markers.map((marker, index) => {
         const { coords, completed, isDraggable } = marker;
         const icon = L.divIcon({
           className: "div-icon-style",
