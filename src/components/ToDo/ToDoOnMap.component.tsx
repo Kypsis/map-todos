@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 
 import {
-  IconContainer,
   BottomIconButtonsContainer,
+  DoneButton,
+  DeleteButton,
+  IconContainer,
   ToDoTextContainer
 } from "./ToDoOnMap.styles";
-import { MdDelete, MdPlaylistAddCheck } from "react-icons/md";
 import { TiLockClosed, TiLockOpen } from "react-icons/ti";
 
 type MarkerId = number[];
@@ -26,12 +27,14 @@ const ToDoOnMap: React.FC<Props> = props => {
 
   // Focus on text if Todo becomes editable
   useEffect(() => {
-    if (todoEditable === true) element?.current && element.current.focus();
+    if (todoEditable === true) {
+      element?.current && element.current.focus();
+    }
   }, [todoEditable]);
 
   // If Todo has no text add placeholder text
   useEffect(() => {
-    if (!todoText.length) setTodoText("Add a todo");
+    if (!todoText.length) setTodoText("Click on this text to add a ToDo!");
   }, [todoText]);
 
   // On blur event (clicking away) setTodoText to current text in the Todo
@@ -76,10 +79,15 @@ const ToDoOnMap: React.FC<Props> = props => {
       )}
 
       <BottomIconButtonsContainer>
-        <MdPlaylistAddCheck
-          onClick={e => props.toggleCompleted(props.markerId)}
-        />
-        <MdDelete onClick={e => props.deleteMarker(props.markerId)} />
+        <DoneButton onClick={() => props.toggleCompleted(props.markerId)}>
+          Done
+        </DoneButton>
+        <DeleteButton
+          /* style={{ backgroundColor: "rgb(255,50,112)" }} */
+          onClick={() => props.deleteMarker(props.markerId)}
+        >
+          Delete
+        </DeleteButton>
       </BottomIconButtonsContainer>
     </div>
   );
