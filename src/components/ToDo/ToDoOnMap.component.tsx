@@ -20,26 +20,26 @@ interface Props {
 }
 
 const ToDoOnMap: React.FC<Props> = props => {
+  const placeHolderText = "Click on this text to add a todo!";
   const [todoEditable, setTodoEditable] = useState(false);
-  const [todoText, setTodoText] = useState("");
+  const [todoText, setTodoText] = useState(placeHolderText);
 
   const element = useRef<HTMLDivElement>(null);
 
   // Focus on text if Todo becomes editable
   useEffect(() => {
     if (todoEditable === true) {
+      if (todoText === placeHolderText) setTodoText("");
       element?.current && element.current.focus();
     }
-  }, [todoEditable]);
+  }, [todoEditable, todoText]);
 
-  // If Todo has no text add placeholder text
-  useEffect(() => {
-    if (!todoText.length) setTodoText("Click on this text to add a ToDo!");
-  }, [todoText]);
-
-  // On blur event (clicking away) setTodoText to current text in the Todo
+  // On blur event (clicking away) setTodoText to current text in the Todo or
+  // to placeholder text if todo text is empty
   const handleBlur = () => {
-    element?.current?.textContent && setTodoText(element.current.textContent);
+    element?.current?.textContent?.length
+      ? setTodoText(element.current.textContent)
+      : setTodoText(placeHolderText);
     setTodoEditable(false);
   };
 
@@ -48,7 +48,9 @@ const ToDoOnMap: React.FC<Props> = props => {
   const handleEnterKey = (e: React.KeyboardEvent) => {
     if (e.shiftKey && e.key === "Enter") return;
     if (e.key === "Enter") {
-      element?.current?.textContent && setTodoText(element.current.textContent);
+      element?.current?.textContent?.length
+        ? setTodoText(element.current.textContent)
+        : setTodoText(placeHolderText);
       setTodoEditable(false);
     }
   };
@@ -82,10 +84,7 @@ const ToDoOnMap: React.FC<Props> = props => {
         <DoneButton onClick={() => props.toggleCompleted(props.markerId)}>
           Done
         </DoneButton>
-        <DeleteButton
-          /* style={{ backgroundColor: "rgb(255,50,112)" }} */
-          onClick={() => props.deleteMarker(props.markerId)}
-        >
+        <DeleteButton onClick={() => props.deleteMarker(props.markerId)}>
           Delete
         </DeleteButton>
       </BottomIconButtonsContainer>

@@ -1,24 +1,25 @@
 import styled from "styled-components";
 
 export const DoneButton = styled.button`
-  background-color: #5290f4;
-  /* font-size: 2em; */
-  color: white;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-around;
   align-items: center;
+  background-color: #5290f4;
+  border-radius: 5em;
   border: none;
-  text-decoration: none;
-  cursor: pointer;
-  border-radius: 16px;
   box-shadow: 0 2px 2px #888888;
-  outline: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  font-size: 1.2em;
+  font-family: Calibri, sans-serif;
+  font-weight: bold;
+  justify-content: space-around;
   min-width: 6.3em;
   min-height: 2em;
-
-  -webkit-transition-duration: 0.4s; /* Safari */
+  outline: none;
+  text-decoration: none;
   transition-duration: 0.2s;
+  user-select: none;
+  -webkit-transition-duration: 0.4s;
 
   :hover {
     background-color: #4b82e1;
@@ -46,13 +47,14 @@ export const DeleteButton = styled(DoneButton)`
 
 export const BottomIconButtonsContainer = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   padding-top: 2px;
-  min-width: 16em;
+  min-width: 14.5em;
 `;
 
 export const IconContainer = styled.div`
   color: gray;
+  cursor: pointer;
   font-size: 22px;
   position: absolute;
   left: 3px;
@@ -64,9 +66,9 @@ interface ToDoTextProps {
 
 export const ToDoTextContainer = styled.div<ToDoTextProps>`
   color: #474747;
-  font-size: 1.6em;
-  margin-block-start: 1.5em;
-  margin-block-end: 0.4em;
+  font-size: 1.65em;
+  margin-block-start: 1.9em;
+  margin-block-end: 0.8em;
   outline: none;
   text-decoration: ${props => (props.completed ? "line-through" : "none")};
 `;
