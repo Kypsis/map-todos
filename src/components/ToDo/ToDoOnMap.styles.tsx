@@ -12,9 +12,10 @@ export const DoneButton = styled.button`
   font-size: 1.2em;
   font-family: Calibri, sans-serif;
   font-weight: bold;
-  justify-content: space-around;
-  min-width: 6.3em;
-  min-height: 2em;
+  height: 2em;
+  width: 5.8em;
+  justify-content: center;
+  margin: 0 0.4em;
   outline: none;
   text-decoration: none;
   transition-duration: 0.2s;
@@ -47,7 +48,7 @@ export const DeleteButton = styled(DoneButton)`
 
 export const BottomIconButtonsContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   padding-top: 2px;
   min-width: 14.5em;
 `;

@@ -11,10 +11,15 @@
 .popup-style .leaflet-popup-content-wrapper {
   text-align: center;
   word-wrap: break-word;
+  opacity: 0.95;
 }
 
 .leaflet-popup {
   width: 20em;
+}
+
+.leaflet-popup-tip {
+  opacity: 0.95;
 }
 
 .leaflet-container a.leaflet-popup-close-button {

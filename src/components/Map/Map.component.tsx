@@ -8,6 +8,7 @@ import {
   ZoomControl
 } from "react-leaflet";
 import L, { DragEndEvent, LeafletMouseEvent, LatLngTuple } from "leaflet";
+import "leaflet/dist/leaflet.css";
 
 import ToDoOnMap from "../ToDo/ToDoOnMap.component";
 import Icon from "../Icon/Icon.component";
@@ -18,21 +19,30 @@ interface Props {}
 
 const Map: React.FC<Props> = () => {
   const [markers, setMarkers] = useState([
-    { coords: [59.43898, 24.745272], completed: false, isDraggable: false },
-    { coords: [59.44508, 24.776272], completed: false, isDraggable: false }
+    {
+      coords: [59.43898, 24.745272],
+      address: "",
+      completed: false,
+      isDraggable: false
+    },
+    {
+      coords: [59.42898, 24.79523],
+      address: "",
+      completed: false,
+      isDraggable: false
+    }
   ]);
   const [allowAddMarker, setAllowAddMarker] = useState(true);
 
   // console log if markers state changes
-  useEffect(() => {
-    console.log(markers);
-  }, [markers]);
+  useEffect(() => console.log(markers), [markers]);
 
   const addMarker = (e: LeafletMouseEvent): void => {
     setMarkers(currentMarkers => [
       ...currentMarkers,
       {
         coords: [e.latlng.lat, e.latlng.lng],
+        address: "",
         completed: false,
         isDraggable: false
       }
@@ -86,6 +96,7 @@ const Map: React.FC<Props> = () => {
     <LeafletMap
       center={[59.43708, 24.745272]}
       style={{ width: "100%", height: "100vh" }}
+      maxZoom={19}
       zoom={12}
       zoomControl={false}
       onClick={allowAddMarker ? addMarker : null}
@@ -104,7 +115,7 @@ const Map: React.FC<Props> = () => {
       <ZoomControl position="bottomright" />
 
       {markers.map((marker, index) => {
-        const { coords, completed, isDraggable } = marker;
+        const { coords, address, completed, isDraggable } = marker;
         const icon = L.divIcon({
           className: "div-icon-style",
           iconAnchor: [28, 52],
@@ -132,6 +143,7 @@ const Map: React.FC<Props> = () => {
               onOpen={() => setAllowAddMarker(false)}
             >
               <ToDoOnMap
+                address={address}
                 completed={completed}
                 deleteMarker={deleteMarker}
                 isDraggable={isDraggable}

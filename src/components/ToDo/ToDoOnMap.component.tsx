@@ -12,6 +12,7 @@ import { TiLockClosed, TiLockOpen } from "react-icons/ti";
 type MarkerId = number[];
 interface Props {
   completed: boolean;
+  address: string;
   isDraggable: boolean;
   markerId: MarkerId;
   deleteMarker(markerId: MarkerId): void;
@@ -82,7 +83,7 @@ const ToDoOnMap: React.FC<Props> = props => {
 
       <BottomIconButtonsContainer>
         <DoneButton onClick={() => props.toggleCompleted(props.markerId)}>
-          Done
+          Complete
         </DoneButton>
         <DeleteButton onClick={() => props.deleteMarker(props.markerId)}>
           Delete
@@ -93,3 +94,23 @@ const ToDoOnMap: React.FC<Props> = props => {
 };
 
 export default ToDoOnMap;
+
+/* axios
+      .get(
+        `https://nominatim.openstreetmap.org/reverse?format=geojson&lat=${currentMarkerCoords[0].toFixed(
+          5
+        )}&lon=${currentMarkerCoords[1].toFixed(5)}`
+      )
+      .then((res: any) => {
+        console.log("Current markers:", markers);
+        console.log(res.data.features[0].properties.display_name);
+
+        let copiedMarkers = [...markers];
+        if (copiedMarkers[markers.length - 1].address !== undefined) {
+          copiedMarkers[
+            markers.length - 1
+          ].address = `${res.data.features[0].properties.display_name}`;
+        }
+        setMarkers(copiedMarkers);
+      })
+      .catch(err => console.log(err)); */
