@@ -66,10 +66,9 @@ interface ToDoTextProps {
 }
 
 export const ToDoTextContainer = styled.div<ToDoTextProps>`
-  color: #474747;
   font-size: 1.65em;
   margin-block-start: 1.9em;
-  margin-block-end: 0.8em;
+  margin-block-end: 0.4em;
   outline: none;
   text-decoration: ${props => (props.completed ? "line-through" : "none")};
 `;

@@ -145,6 +145,7 @@ const Map: React.FC<Props> = () => {
               <ToDoOnMap
                 address={address}
                 completed={completed}
+                coords={coords}
                 deleteMarker={deleteMarker}
                 isDraggable={isDraggable}
                 markerId={coords}
