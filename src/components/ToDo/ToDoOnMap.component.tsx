@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
+import Address from "../Address/Address.component";
 import {
   BottomIconButtonsContainer,
   DoneButton,
@@ -57,7 +58,7 @@ const ToDoOnMap: React.FC<Props> = props => {
   };
 
   return (
-    <div>
+    <>
       <ToDoTextContainer
         completed={props.completed}
         contentEditable={todoEditable}
@@ -70,6 +71,7 @@ const ToDoOnMap: React.FC<Props> = props => {
       >
         {todoText}
       </ToDoTextContainer>
+      <Address coords={[0, 1]} />
 
       {props.isDraggable ? (
         <IconContainer>
@@ -89,7 +91,7 @@ const ToDoOnMap: React.FC<Props> = props => {
           Delete
         </DeleteButton>
       </BottomIconButtonsContainer>
-    </div>
+    </>
   );
 };
 
