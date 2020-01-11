@@ -27,7 +27,7 @@ const animation = keyframes`
 `;
 
 export const SvgContainer = styled.div<SvgProps>`
-  opacity: ${props => (props.completed ? "0.4" : "1")};
+  opacity: ${props => (props.completed ? "0.35" : "1")};
   ${props =>
     props.isDraggable &&
     css`

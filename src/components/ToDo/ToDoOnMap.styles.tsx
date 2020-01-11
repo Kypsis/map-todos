@@ -61,6 +61,7 @@ export const IconContainer = styled.div`
   left: 3px;
   top: 1px;
 `;
+
 interface ToDoTextProps {
   readonly completed: boolean;
 }
