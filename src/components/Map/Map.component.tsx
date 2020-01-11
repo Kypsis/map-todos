@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
 import ReactDOMServer from "react-dom/server";
 import {
   Map as LeafletMap,
@@ -10,15 +11,20 @@ import {
 import L, { DragEndEvent, LeafletMouseEvent, LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 
+import { TodoMarker } from "../../actions";
+import { StoreState } from "../../reducers";
+
 import ToDoOnMap from "../ToDo/ToDoOnMap.component";
 import Icon from "../Icon/Icon.component";
 
 import "./Map.css";
 
-interface Props {}
+interface Props {
+  markers: TodoMarker[];
+}
 
-const Map: React.FC<Props> = () => {
-  const [markers, setMarkers] = useState([
+const _Map: React.FC<Props> = props => {
+  /* const [markers, setMarkers] = useState([
     {
       coords: [59.43898, 24.745272],
       address: "",
@@ -31,13 +37,15 @@ const Map: React.FC<Props> = () => {
       completed: false,
       isDraggable: false
     }
-  ]);
+  ]); */
+  const { markers } = props;
+
   const [allowAddMarker, setAllowAddMarker] = useState(true);
 
   // console log if markers state changes
   useEffect(() => console.log(markers), [markers]);
 
-  const addMarker = (e: LeafletMouseEvent): void => {
+  /* const addMarker = (e: LeafletMouseEvent): void => {
     setMarkers(currentMarkers => [
       ...currentMarkers,
       {
@@ -91,7 +99,7 @@ const Map: React.FC<Props> = () => {
   const deleteMarker = (markerId: number[]): void => {
     setMarkers(markers.filter(marker => marker.coords !== markerId));
   };
-
+ */
   return (
     <LeafletMap
       center={[59.43708, 24.745272]}
@@ -99,7 +107,7 @@ const Map: React.FC<Props> = () => {
       maxZoom={19}
       zoom={12}
       zoomControl={false}
-      onClick={allowAddMarker ? addMarker : null}
+      onClick={/* allowAddMarker ? addMarker : */ null}
       // add timeouts, otherwise it will add marker on map when clicking out of popup
       onPopupOpen={() => {
         setTimeout(() => setAllowAddMarker(false), 10);
@@ -135,7 +143,7 @@ const Map: React.FC<Props> = () => {
             draggable={isDraggable}
             icon={icon}
             key={`${coords}`}
-            onDragend={updateMarkerPosition}
+            /* onDragend={updateMarkerPosition} */
             position={coords as LatLngTuple}
           >
             <Popup
@@ -146,11 +154,11 @@ const Map: React.FC<Props> = () => {
                 address={address}
                 completed={completed}
                 coords={coords}
-                deleteMarker={deleteMarker}
+                deleteMarker={/* deleteMarker */ () => 1}
                 isDraggable={isDraggable}
                 markerId={coords}
-                toggleCompleted={toggleCompleted}
-                toggleDraggable={toggleDraggable}
+                toggleCompleted={/* toggleCompleted */ () => 1}
+                toggleDraggable={/* toggleDraggable */ () => 1}
               />
             </Popup>
           </Marker>
@@ -160,4 +168,10 @@ const Map: React.FC<Props> = () => {
   );
 };
 
-export default Map;
+const mapStateToProps = ({
+  markers
+}: StoreState): { markers: TodoMarker[] } => {
+  return { markers };
+};
+
+export default connect(mapStateToProps)(_Map);

@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+
 import { Todo, fetchTodos, deleteTodo, DeleteTodoAction } from "./actions";
 import { StoreState } from "./reducers";
 

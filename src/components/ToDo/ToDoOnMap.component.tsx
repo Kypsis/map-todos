@@ -10,16 +10,15 @@ import {
 } from "./ToDoOnMap.styles";
 import { TiLockClosed, TiLockOpen } from "react-icons/ti";
 
-type MarkerId = number[];
 interface Props {
   coords: number[];
   completed: boolean;
   address: string;
   isDraggable: boolean;
-  markerId: MarkerId;
-  deleteMarker(markerId: MarkerId): void;
-  toggleCompleted(markerId: MarkerId): void;
-  toggleDraggable(markerId: MarkerId): void;
+  markerId: number[];
+  deleteMarker(markerId: number[]): void;
+  toggleCompleted(markerId: number[]): void;
+  toggleDraggable(markerId: number[]): void;
 }
 
 const ToDoOnMap: React.FC<Props> = props => {
