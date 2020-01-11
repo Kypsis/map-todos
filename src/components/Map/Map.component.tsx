@@ -11,52 +11,29 @@ import {
 import L, { DragEndEvent, LeafletMouseEvent, LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-import { TodoMarker } from "../../actions";
+import { TodoMarker, addMarker, AddMarkerAction } from "../../actions";
 import { StoreState } from "../../reducers";
 
 import ToDoOnMap from "../ToDo/ToDoOnMap.component";
 import Icon from "../Icon/Icon.component";
 
 import "./Map.css";
+import { Dispatch } from "redux";
 
 interface Props {
   markers: TodoMarker[];
+  addMarker(e: LeafletMouseEvent): AddMarkerAction;
 }
 
 const _Map: React.FC<Props> = props => {
-  /* const [markers, setMarkers] = useState([
-    {
-      coords: [59.43898, 24.745272],
-      address: "",
-      completed: false,
-      isDraggable: false
-    },
-    {
-      coords: [59.42898, 24.79523],
-      address: "",
-      completed: false,
-      isDraggable: false
-    }
-  ]); */
-  const { markers } = props;
-
   const [allowAddMarker, setAllowAddMarker] = useState(true);
+
+  const { markers, addMarker } = props;
 
   // console log if markers state changes
   useEffect(() => console.log(markers), [markers]);
 
-  /* const addMarker = (e: LeafletMouseEvent): void => {
-    setMarkers(currentMarkers => [
-      ...currentMarkers,
-      {
-        coords: [e.latlng.lat, e.latlng.lng],
-        address: "",
-        completed: false,
-        isDraggable: false
-      }
-    ]);
-  };
-
+  /*
   const updateMarkerPosition = (e: DragEndEvent): void => {
     const markerIndex = markers.findIndex(
       marker => marker.coords === e.target.options.position
@@ -107,7 +84,7 @@ const _Map: React.FC<Props> = props => {
       maxZoom={19}
       zoom={12}
       zoomControl={false}
-      onClick={/* allowAddMarker ? addMarker : */ null}
+      onClick={allowAddMarker ? addMarker : null}
       // add timeouts, otherwise it will add marker on map when clicking out of popup
       onPopupOpen={() => {
         setTimeout(() => setAllowAddMarker(false), 10);
@@ -174,4 +151,8 @@ const mapStateToProps = ({
   return { markers };
 };
 
-export default connect(mapStateToProps)(_Map);
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  addMarker: (e: LeafletMouseEvent) => dispatch(addMarker(e))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(_Map);

@@ -1,8 +1,10 @@
 import { FetchTodosAction, DeleteTodoAction } from "./todos.actions";
+import { addMarker, AddMarkerAction } from "./markers.actions";
 
 export enum ActionTypes {
   fetchTodos,
-  deleteTodo
+  deleteTodo,
+  addMarker
 }
 
-export type Action = FetchTodosAction | DeleteTodoAction;
+export type Action = FetchTodosAction | DeleteTodoAction | AddMarkerAction;
