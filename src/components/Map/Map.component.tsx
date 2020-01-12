@@ -34,9 +34,6 @@ const Map: React.FC<Props> = props => {
 
   const { markers, addMarker } = props;
 
-  // console log if markers state changes
-  useEffect(() => console.log(markers), [markers]);
-
   /*
   const updateMarkerPosition = (e: DragEndEvent): void => {
     const markerIndex = markers.findIndex(

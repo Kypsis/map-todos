@@ -5,9 +5,9 @@ import {
 } from "./markers.actions";
 
 export enum ActionTypes {
-  ADD_MARKER,
-  TOGGLE_DRAGGABLE,
-  TOGGLE_COMPLETED
+  ADD_MARKER = "ADD_MARKER",
+  TOGGLE_DRAGGABLE = "TOGGLE_DRAGGABLE",
+  TOGGLE_COMPLETED = "TOGGLE_COMPLETED"
 }
 
 export type Action =

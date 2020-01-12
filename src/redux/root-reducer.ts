@@ -7,6 +7,6 @@ export interface StoreState {
   markers: TodoMarker[];
 }
 
-export const reducers = combineReducers<StoreState>({
+export const rootReducer = combineReducers<StoreState>({
   markers: markersReducer
 });

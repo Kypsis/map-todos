@@ -13,6 +13,7 @@
     "@types/react-dom": "^16.9.4",
     "@types/react-leaflet": "^2.5.0",
     "@types/react-redux": "^7.1.5",
+    "@types/redux-logger": "^3.0.7",
     "@types/styled-components": "^4.4.1",
     "axios": "^0.19.1",
     "dotenv": "^8.2.0",
@@ -49,5 +50,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "redux-logger": "^3.0.6"
   }
 }
