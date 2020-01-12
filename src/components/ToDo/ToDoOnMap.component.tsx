@@ -13,7 +13,8 @@ import {
 import { TiLockClosed, TiLockOpen } from "react-icons/ti";
 import {
   toggleDraggable,
-  toggleCompleted
+  toggleCompleted,
+  deleteMarker
 } from "../../redux/markers/markers.actions";
 
 interface Props {
@@ -103,7 +104,8 @@ const ToDoOnMap: React.FC<Props> = props => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   toggleDraggable: (markerId: string) => dispatch(toggleDraggable(markerId)),
-  toggleCompleted: (markerId: string) => dispatch(toggleCompleted(markerId))
+  toggleCompleted: (markerId: string) => dispatch(toggleCompleted(markerId)),
+  deleteMarker: (markerId: string) => dispatch(deleteMarker(markerId))
 });
 
 export default connect(null, mapDispatchToProps)(ToDoOnMap);

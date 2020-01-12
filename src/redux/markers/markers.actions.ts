@@ -36,3 +36,15 @@ export const toggleCompleted = (markerId: string): ToggleCompletedAction => {
     payload: markerId
   };
 };
+
+export interface DeleteMarkerAction {
+  type: ActionTypes.DELETE_MARKER;
+  payload: string;
+}
+
+export const deleteMarker = (markerId: string): DeleteMarkerAction => {
+  return {
+    type: ActionTypes.DELETE_MARKER,
+    payload: markerId
+  };
+};

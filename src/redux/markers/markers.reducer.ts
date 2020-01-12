@@ -46,6 +46,10 @@ export const markersReducer = (
       copiedMarkers[markerIndex].completed = !copiedMarkers[markerIndex]
         .completed;
       return [...copiedMarkers];
+    case ActionTypes.DELETE_MARKER:
+      return state.filter(
+        marker => marker.coords.toString() !== action.payload
+      );
     default:
       return state;
   }

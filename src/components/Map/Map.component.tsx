@@ -56,15 +56,6 @@ const Map: React.FC<Props> = props => {
     setMarkers(copiedMarkers);
   };
 
-  const toggleCompleted = (markerId: number[]): void => {
-    const markerIndex = markers.findIndex(marker => marker.coords === markerId);
-    let copiedMarkers = [...markers];
-
-    copiedMarkers[markerIndex].completed = !copiedMarkers[markerIndex]
-      .completed;
-    setMarkers(copiedMarkers);
-  };
-
   const deleteMarker = (markerId: number[]): void => {
     setMarkers(markers.filter(marker => marker.coords !== markerId));
   };
@@ -123,7 +114,6 @@ const Map: React.FC<Props> = props => {
                 address={address}
                 completed={completed}
                 coords={coords}
-                deleteMarker={/* deleteMarker */ () => 1}
                 isDraggable={isDraggable}
                 markerId={coords.toString()}
               />
