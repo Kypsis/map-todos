@@ -1,6 +1,6 @@
-import { TodoMarker, Action, ActionTypes } from "../actions";
+import { ActionTypes, Action, TodoMarker } from "./markers.types";
 
-const defaultState = [
+const INITIAL_STATE = [
   {
     coords: [59.43898, 24.745272],
     text: "Placeholder text",
@@ -18,11 +18,11 @@ const defaultState = [
 ];
 
 export const markersReducer = (
-  state: TodoMarker[] = defaultState,
+  state: TodoMarker[] = INITIAL_STATE,
   action: Action
 ) => {
   switch (action.type) {
-    case ActionTypes.addMarker:
+    case ActionTypes.ADD_MARKER:
       return [
         ...state,
         {
@@ -33,6 +33,14 @@ export const markersReducer = (
           isDraggable: false
         }
       ];
+    case ActionTypes.TOGGLE_DRAGGABLE:
+      const markerIndex = state.findIndex(
+        marker => marker.coords.toString() === action.payload
+      );
+      let copiedMarkers = [...state];
+      copiedMarkers[markerIndex].isDraggable = !copiedMarkers[markerIndex]
+        .isDraggable;
+      return [...copiedMarkers];
     default:
       return state;
   }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import ReactDOMServer from "react-dom/server";
 import {
@@ -11,21 +12,24 @@ import {
 import L, { DragEndEvent, LeafletMouseEvent, LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-import { TodoMarker, addMarker, AddMarkerAction } from "../../actions";
-import { StoreState } from "../../reducers";
+import {
+  addMarker,
+  AddMarkerAction
+} from "../../redux/markers/markers.actions";
+import { TodoMarker } from "../../redux/markers/markers.types";
+import { StoreState } from "../../redux/root-reducer";
 
 import ToDoOnMap from "../ToDo/ToDoOnMap.component";
 import Icon from "../Icon/Icon.component";
 
 import "./Map.css";
-import { Dispatch } from "redux";
 
 interface Props {
   markers: TodoMarker[];
   addMarker(e: LeafletMouseEvent): AddMarkerAction;
 }
 
-const _Map: React.FC<Props> = props => {
+const Map: React.FC<Props> = props => {
   const [allowAddMarker, setAllowAddMarker] = useState(true);
 
   const { markers, addMarker } = props;
@@ -133,9 +137,8 @@ const _Map: React.FC<Props> = props => {
                 coords={coords}
                 deleteMarker={/* deleteMarker */ () => 1}
                 isDraggable={isDraggable}
-                markerId={coords}
+                markerId={coords.toString()}
                 toggleCompleted={/* toggleCompleted */ () => 1}
-                toggleDraggable={/* toggleDraggable */ () => 1}
               />
             </Popup>
           </Marker>
@@ -155,4 +158,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   addMarker: (e: LeafletMouseEvent) => dispatch(addMarker(e))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(_Map);
+export default connect(mapStateToProps, mapDispatchToProps)(Map);
