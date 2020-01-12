@@ -1,11 +1,19 @@
-import { AddMarkerAction, ToggleDraggableAction } from "./markers.actions";
+import {
+  AddMarkerAction,
+  ToggleDraggableAction,
+  ToggleCompletedAction
+} from "./markers.actions";
 
 export enum ActionTypes {
   ADD_MARKER,
-  TOGGLE_DRAGGABLE
+  TOGGLE_DRAGGABLE,
+  TOGGLE_COMPLETED
 }
 
-export type Action = AddMarkerAction | ToggleDraggableAction;
+export type Action =
+  | AddMarkerAction
+  | ToggleCompletedAction
+  | ToggleDraggableAction;
 
 export interface TodoMarker {
   coords: number[];

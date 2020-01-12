@@ -21,6 +21,11 @@ export const markersReducer = (
   state: TodoMarker[] = INITIAL_STATE,
   action: Action
 ) => {
+  const markerIndex = state.findIndex(
+    marker => marker.coords.toString() === action.payload
+  );
+  let copiedMarkers = [...state];
+
   switch (action.type) {
     case ActionTypes.ADD_MARKER:
       return [
@@ -34,12 +39,12 @@ export const markersReducer = (
         }
       ];
     case ActionTypes.TOGGLE_DRAGGABLE:
-      const markerIndex = state.findIndex(
-        marker => marker.coords.toString() === action.payload
-      );
-      let copiedMarkers = [...state];
       copiedMarkers[markerIndex].isDraggable = !copiedMarkers[markerIndex]
         .isDraggable;
+      return [...copiedMarkers];
+    case ActionTypes.TOGGLE_COMPLETED:
+      copiedMarkers[markerIndex].completed = !copiedMarkers[markerIndex]
+        .completed;
       return [...copiedMarkers];
     default:
       return state;

@@ -11,7 +11,10 @@ import {
   ToDoTextContainer
 } from "./ToDoOnMap.styles";
 import { TiLockClosed, TiLockOpen } from "react-icons/ti";
-import { toggleDraggable } from "../../redux/markers/markers.actions";
+import {
+  toggleDraggable,
+  toggleCompleted
+} from "../../redux/markers/markers.actions";
 
 interface Props {
   coords: number[];
@@ -99,7 +102,8 @@ const ToDoOnMap: React.FC<Props> = props => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  toggleDraggable: (markerId: string) => dispatch(toggleDraggable(markerId))
+  toggleDraggable: (markerId: string) => dispatch(toggleDraggable(markerId)),
+  toggleCompleted: (markerId: string) => dispatch(toggleCompleted(markerId))
 });
 
 export default connect(null, mapDispatchToProps)(ToDoOnMap);

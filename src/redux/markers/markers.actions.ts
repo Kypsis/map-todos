@@ -24,3 +24,15 @@ export const toggleDraggable = (markerId: string): ToggleDraggableAction => {
     payload: markerId
   };
 };
+
+export interface ToggleCompletedAction {
+  type: ActionTypes.TOGGLE_COMPLETED;
+  payload: string;
+}
+
+export const toggleCompleted = (markerId: string): ToggleCompletedAction => {
+  return {
+    type: ActionTypes.TOGGLE_COMPLETED,
+    payload: markerId
+  };
+};
