@@ -1,15 +1,31 @@
 import { ActionTypes } from "./markers.types";
-import { LeafletMouseEvent } from "leaflet";
+import { LeafletMouseEvent, LatLng, DragEndEvent } from "leaflet";
 
 export interface AddMarkerAction {
   type: ActionTypes.ADD_MARKER;
-  payload: LeafletMouseEvent;
+  payload: LatLng;
 }
 
 export const addMarker = (event: LeafletMouseEvent): AddMarkerAction => {
   return {
     type: ActionTypes.ADD_MARKER,
-    payload: event
+    payload: event.latlng
+  };
+};
+
+export interface UpdatePositionAction {
+  type: ActionTypes.UPDATE_POSITION;
+  payload: { lat: number; lng: number; options: string };
+}
+
+export const updatePosition = (event: DragEndEvent): UpdatePositionAction => {
+  return {
+    type: ActionTypes.UPDATE_POSITION,
+    payload: {
+      lat: event.target._latlng.lat,
+      lng: event.target._latlng.lng,
+      options: event.target.options.position.toString()
+    }
   };
 };
 

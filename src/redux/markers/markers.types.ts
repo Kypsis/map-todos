@@ -1,5 +1,6 @@
 import {
   AddMarkerAction,
+  UpdatePositionAction,
   ToggleDraggableAction,
   ToggleCompletedAction,
   DeleteMarkerAction
@@ -7,6 +8,7 @@ import {
 
 export enum ActionTypes {
   ADD_MARKER = "ADD_MARKER",
+  UPDATE_POSITION = "UPDATE_POSITION",
   TOGGLE_DRAGGABLE = "TOGGLE_DRAGGABLE",
   TOGGLE_COMPLETED = "TOGGLE_COMPLETED",
   DELETE_MARKER = "DELETE_MARKER"
@@ -14,6 +16,7 @@ export enum ActionTypes {
 
 export type Action =
   | AddMarkerAction
+  | UpdatePositionAction
   | ToggleCompletedAction
   | ToggleDraggableAction
   | DeleteMarkerAction;

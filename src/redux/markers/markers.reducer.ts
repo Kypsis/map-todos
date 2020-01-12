@@ -31,25 +31,40 @@ export const markersReducer = (
       return [
         ...state,
         {
-          coords: [action.payload.latlng.lat, action.payload.latlng.lng],
+          coords: [action.payload.lat, action.payload.lng],
           text: "",
           address: "",
           completed: false,
           isDraggable: false
         }
       ];
+
+    case ActionTypes.UPDATE_POSITION:
+      const updatedMarkerIndex = state.findIndex(
+        marker => marker.coords.toString() === action.payload.options
+      );
+      let copiedUpdatedMarkers = [...state];
+      copiedUpdatedMarkers[updatedMarkerIndex].coords = [
+        action.payload.lat,
+        action.payload.lng
+      ];
+      return [...copiedUpdatedMarkers];
+
     case ActionTypes.TOGGLE_DRAGGABLE:
       copiedMarkers[markerIndex].isDraggable = !copiedMarkers[markerIndex]
         .isDraggable;
       return [...copiedMarkers];
+
     case ActionTypes.TOGGLE_COMPLETED:
       copiedMarkers[markerIndex].completed = !copiedMarkers[markerIndex]
         .completed;
       return [...copiedMarkers];
+
     case ActionTypes.DELETE_MARKER:
       return state.filter(
         marker => marker.coords.toString() !== action.payload
       );
+
     default:
       return state;
   }

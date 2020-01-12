@@ -14,7 +14,9 @@ import "leaflet/dist/leaflet.css";
 
 import {
   addMarker,
-  AddMarkerAction
+  AddMarkerAction,
+  updatePosition,
+  UpdatePositionAction
 } from "../../redux/markers/markers.actions";
 import { TodoMarker } from "../../redux/markers/markers.types";
 import { StoreState } from "../../redux/root-reducer";
@@ -26,40 +28,15 @@ import "./Map.css";
 
 interface Props {
   markers: TodoMarker[];
-  addMarker(e: LeafletMouseEvent): AddMarkerAction;
+  addMarker(event: LeafletMouseEvent): AddMarkerAction;
+  updatePosition(event: DragEndEvent): UpdatePositionAction;
 }
 
 const Map: React.FC<Props> = props => {
   const [allowAddMarker, setAllowAddMarker] = useState(true);
 
-  const { markers, addMarker } = props;
+  const { markers, addMarker, updatePosition } = props;
 
-  /*
-  const updateMarkerPosition = (e: DragEndEvent): void => {
-    const markerIndex = markers.findIndex(
-      marker => marker.coords === e.target.options.position
-    );
-    // copy current markers state
-    let copiedMarkers = [...markers];
-
-    if (copiedMarkers[markerIndex].coords !== undefined) {
-      // replace dragged marker initial coordinates with new coordinates
-      copiedMarkers[markerIndex].coords = [
-        e.target._latlng.lat,
-        e.target._latlng.lng
-      ];
-    } else {
-      console.log("Marker lock error");
-      return;
-    }
-    // set modified copiedMarkers as new markers state
-    setMarkers(copiedMarkers);
-  };
-
-  const deleteMarker = (markerId: number[]): void => {
-    setMarkers(markers.filter(marker => marker.coords !== markerId));
-  };
- */
   return (
     <LeafletMap
       center={[59.43708, 24.745272]}
@@ -103,7 +80,7 @@ const Map: React.FC<Props> = props => {
             draggable={isDraggable}
             icon={icon}
             key={`${coords}`}
-            /* onDragend={updateMarkerPosition} */
+            onDragend={updatePosition}
             position={coords as LatLngTuple}
           >
             <Popup
@@ -132,7 +109,8 @@ const mapStateToProps = ({
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  addMarker: (e: LeafletMouseEvent) => dispatch(addMarker(e))
+  addMarker: (event: LeafletMouseEvent) => dispatch(addMarker(event)),
+  updatePosition: (event: DragEndEvent) => dispatch(updatePosition(event))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Map);

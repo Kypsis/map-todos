@@ -103,9 +103,9 @@ const ToDoOnMap: React.FC<Props> = props => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  toggleDraggable: (markerId: string) => dispatch(toggleDraggable(markerId)),
+  deleteMarker: (markerId: string) => dispatch(deleteMarker(markerId)),
   toggleCompleted: (markerId: string) => dispatch(toggleCompleted(markerId)),
-  deleteMarker: (markerId: string) => dispatch(deleteMarker(markerId))
+  toggleDraggable: (markerId: string) => dispatch(toggleDraggable(markerId))
 });
 
 export default connect(null, mapDispatchToProps)(ToDoOnMap);
