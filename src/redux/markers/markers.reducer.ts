@@ -3,14 +3,14 @@ import { ActionTypes, Action, TodoMarker } from "./markers.types";
 const INITIAL_STATE = [
   {
     coords: [59.43898, 24.745272],
-    text: "Placeholder text",
+    text: "Click on this text to add a todo!",
     address: "",
     completed: false,
     isDraggable: false
   },
   {
     coords: [59.42898, 24.79523],
-    text: "",
+    text: "Click on this text to add a todo!",
     address: "",
     completed: false,
     isDraggable: false
@@ -24,7 +24,7 @@ export const markersReducer = (
   const markerIndex = state.findIndex(
     marker => marker.coords.toString() === action.payload
   );
-  let copiedMarkers = [...state];
+  let copiedState = [...state];
 
   switch (action.type) {
     case ActionTypes.ADD_MARKER:
@@ -32,7 +32,7 @@ export const markersReducer = (
         ...state,
         {
           coords: [action.payload.lat, action.payload.lng],
-          text: "",
+          text: "Click on this text to add a todo!",
           address: "",
           completed: false,
           isDraggable: false
@@ -40,25 +40,36 @@ export const markersReducer = (
       ];
 
     case ActionTypes.UPDATE_POSITION:
-      const updatedMarkerIndex = state.findIndex(
+      const markerIndexForPosition = state.findIndex(
         marker => marker.coords.toString() === action.payload.options
       );
-      let copiedUpdatedMarkers = [...state];
-      copiedUpdatedMarkers[updatedMarkerIndex].coords = [
+      copiedState[markerIndexForPosition].coords = [
         action.payload.lat,
         action.payload.lng
       ];
-      return [...copiedUpdatedMarkers];
+      return [...copiedState];
+
+
+    // TODO from this point, does not set placeholder text when falsy
+    case ActionTypes.UPDATE_TEXT:
+      const markerIndexForText = state.findIndex(
+        marker => marker.coords.toString() === action.payload.markerId
+      );
+      console.log(action.payload.textContent.length);
+
+      copiedState[markerIndexForText].text = action.payload.textContent.length
+        ? action.payload.textContent
+        : "Click on this text to add a todo!";
+      return [...copiedState];
 
     case ActionTypes.TOGGLE_DRAGGABLE:
-      copiedMarkers[markerIndex].isDraggable = !copiedMarkers[markerIndex]
+      copiedState[markerIndex].isDraggable = !copiedState[markerIndex]
         .isDraggable;
-      return [...copiedMarkers];
+      return [...copiedState];
 
     case ActionTypes.TOGGLE_COMPLETED:
-      copiedMarkers[markerIndex].completed = !copiedMarkers[markerIndex]
-        .completed;
-      return [...copiedMarkers];
+      copiedState[markerIndex].completed = !copiedState[markerIndex].completed;
+      return [...copiedState];
 
     case ActionTypes.DELETE_MARKER:
       return state.filter(

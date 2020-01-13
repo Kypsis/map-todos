@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import ReactDOMServer from "react-dom/server";
@@ -10,7 +10,9 @@ import {
   ZoomControl
 } from "react-leaflet";
 import L, { DragEndEvent, LeafletMouseEvent, LatLngTuple } from "leaflet";
+
 import "leaflet/dist/leaflet.css";
+import "./Map.css";
 
 import {
   addMarker,
@@ -23,8 +25,6 @@ import { StoreState } from "../../redux/root-reducer";
 
 import ToDoOnMap from "../ToDo/ToDoOnMap.component";
 import Icon from "../Icon/Icon.component";
-
-import "./Map.css";
 
 interface Props {
   markers: TodoMarker[];
@@ -60,7 +60,7 @@ const Map: React.FC<Props> = props => {
       <ZoomControl position="bottomright" />
 
       {markers.map((marker, index) => {
-        const { coords, address, completed, isDraggable } = marker;
+        const { coords, text, address, completed, isDraggable } = marker;
         const icon = L.divIcon({
           className: "div-icon-style",
           iconAnchor: [28, 52],
@@ -68,9 +68,9 @@ const Map: React.FC<Props> = props => {
           // Render custom svg icon
           html: ReactDOMServer.renderToString(
             <Icon
-              isDraggable={isDraggable}
               completed={completed}
               iconNumber={index}
+              isDraggable={isDraggable}
             />
           )
         });
@@ -88,9 +88,10 @@ const Map: React.FC<Props> = props => {
               onOpen={() => setAllowAddMarker(false)}
             >
               <ToDoOnMap
+                coords={coords}
+                text={text}
                 address={address}
                 completed={completed}
-                coords={coords}
                 isDraggable={isDraggable}
                 markerId={coords.toString()}
               />

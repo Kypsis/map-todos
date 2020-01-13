@@ -29,6 +29,21 @@ export const updatePosition = (event: DragEndEvent): UpdatePositionAction => {
   };
 };
 
+export interface UpdateTextAction {
+  type: ActionTypes.UPDATE_TEXT;
+  payload: { markerId: string; textContent: string };
+}
+
+export const updateText = (
+  markerId: string,
+  element: React.RefObject<HTMLDivElement>
+): UpdateTextAction => {
+  return {
+    type: ActionTypes.UPDATE_TEXT,
+    payload: { markerId, textContent: element.current?.textContent ?? "" }
+  };
+};
+
 export interface ToggleDraggableAction {
   type: ActionTypes.TOGGLE_DRAGGABLE;
   payload: string;

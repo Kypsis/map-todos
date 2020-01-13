@@ -12,17 +12,20 @@ import {
 } from "./ToDoOnMap.styles";
 import { TiLockClosed, TiLockOpen } from "react-icons/ti";
 import {
-  toggleDraggable,
+  updateText,
   toggleCompleted,
+  toggleDraggable,
   deleteMarker
 } from "../../redux/markers/markers.actions";
 
 interface Props {
   coords: number[];
-  completed: boolean;
   address: string;
+  text: string;
+  completed: boolean;
   isDraggable: boolean;
   markerId: string;
+  updateText(markerId: string, element: React.RefObject<HTMLDivElement>): void;
   deleteMarker(markerId: string): void;
   toggleCompleted(markerId: string): void;
   toggleDraggable(markerId: string): void;
@@ -38,17 +41,15 @@ const ToDoOnMap: React.FC<Props> = props => {
   // Focus on text if Todo becomes editable
   useEffect(() => {
     if (todoEditable === true) {
-      if (todoText === placeHolderText) setTodoText("");
+      /* if (props.text === placeHolderText) setTodoText(""); */
       element?.current && element.current.focus();
     }
-  }, [todoEditable, todoText]);
+  }, [todoEditable]);
 
   // On blur event (clicking away) setTodoText to current text in the Todo or
   // to placeholder text if todo text is empty
   const handleBlur = () => {
-    element?.current?.textContent?.length
-      ? setTodoText(element.current.textContent)
-      : setTodoText(placeHolderText);
+    props.updateText(props.markerId, element);
     setTodoEditable(false);
   };
 
@@ -57,9 +58,7 @@ const ToDoOnMap: React.FC<Props> = props => {
   const handleEnterKey = (e: React.KeyboardEvent) => {
     if (e.shiftKey && e.key === "Enter") return;
     if (e.key === "Enter") {
-      element?.current?.textContent?.length
-        ? setTodoText(element.current.textContent)
-        : setTodoText(placeHolderText);
+      props.updateText(props.markerId, element);
       setTodoEditable(false);
     }
   };
@@ -76,7 +75,7 @@ const ToDoOnMap: React.FC<Props> = props => {
         ref={element}
         suppressContentEditableWarning
       >
-        {todoText}
+        {props.text}
       </ToDoTextContainer>
       <Address coords={props.coords} />
 
@@ -103,9 +102,11 @@ const ToDoOnMap: React.FC<Props> = props => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  deleteMarker: (markerId: string) => dispatch(deleteMarker(markerId)),
+  updateText: (markerId: string, element: React.RefObject<HTMLDivElement>) =>
+    dispatch(updateText(markerId, element)),
   toggleCompleted: (markerId: string) => dispatch(toggleCompleted(markerId)),
-  toggleDraggable: (markerId: string) => dispatch(toggleDraggable(markerId))
+  toggleDraggable: (markerId: string) => dispatch(toggleDraggable(markerId)),
+  deleteMarker: (markerId: string) => dispatch(deleteMarker(markerId))
 });
 
 export default connect(null, mapDispatchToProps)(ToDoOnMap);
